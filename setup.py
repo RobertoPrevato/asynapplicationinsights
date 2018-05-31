@@ -5,21 +5,25 @@ def readme():
         return f.read()
 
 setup(name='asynapplicationinsights',
-      version='0.1',
+      version='0.0.1',
       description='Azure Application Insights client using asyncio',
       long_description=readme(),
       classifiers=[
           'Development Status :: 3 - Alpha',
           'License :: OSI Approved :: MIT License',
-          'Programming Language :: Python :: 3.6.5',
-          'Topic :: Azure Application Insights :: Telemetry :: async',
+          'Programming Language :: Python :: 3.6',
+          'Operating System :: OS Independent',
+          'Framework :: AsyncIO'
       ],
       url='https://github.com/RobertoPrevato/asynapplicationinsights',
       author='Roberto Prevato',
       author_email='roberto.prevato@gmail.com',
       keywords='asyncio aiohttp azure application insights telemetry',
       license='MIT',
-      packages=['asynapplicationinsights'],
+      packages=['asynapplicationinsights',
+                'asynapplicationinsights.channel',
+                'asynapplicationinsights.tests',
+                'asynapplicationinsights.utils'],
       install_requires=[
           'aiohttp',
       ],
