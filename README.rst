@@ -1,6 +1,6 @@
 Azure Application Insights client using asyncio and aiohttp
 ----------------------------------------------------------------
-`Azure Application Insights <https://azure.microsoft.com/en-us/services/application-insights/>`_ client using asyncio, including a middleware for *aiohttp* web framework.
+`Azure Application Insights <https://azure.microsoft.com/en-us/services/application-insights/>`_ Python SDK using asyncio, including a middleware for *aiohttp* web framework.
 
 Why
 ````````````````````````````````````````````````````````````````
