@@ -10,15 +10,23 @@ class AiohttpTelemetryChannel(TelemetryChannel):
 
     def __init__(self,
                  loop:Optional[asyncio.AbstractEventLoop]=None,
+                 client:Optional[aiohttp.ClientSession]=None,
                  endpoint:Optional[str]=None):
         super().__init__()
-        if loop is None:
-            loop = asyncio.get_event_loop()
+
+        dispose_client = True
+        if client is None:
+            if loop is None:
+                loop = asyncio.get_event_loop()
+            client = aiohttp.ClientSession(loop=loop)
+        else:
+            dispose_client = False
 
         if not endpoint:
             endpoint = 'https://dc.services.visualstudio.com/v2/track'
 
-        self._http_client = aiohttp.ClientSession(loop=loop)
+        self._dispose_client = dispose_client
+        self._http_client = client
         self._endpoint = endpoint
         self._headers = {'Accept':'application/json', 'Content-Type': 'application/json; charset=utf-8'}
 
@@ -33,4 +41,6 @@ class AiohttpTelemetryChannel(TelemetryChannel):
             raise OperationFailed(f'Response status does not indicate success: {response.status}; response body: {text}')
 
     async def dispose(self):
-        await self._http_client.close()
+        # NB: the client is disposed only if it was instantiated
+        if self._dispose_client:
+            await self._http_client.close()

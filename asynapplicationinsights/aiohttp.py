@@ -12,7 +12,7 @@
 import uuid
 import time
 from typing import Optional, Callable
-from aiohttp import web
+from aiohttp import web, ClientSession
 from aiohttp.web_exceptions import HTTPException
 from datetime import datetime
 from .telemetry import AsyncTelemetryClient
@@ -55,7 +55,8 @@ def use_application_insights(app: web.Application,
                              user_getter: Optional[Callable] = None,
                              is_success_request: Optional[Callable] = None,
                              requests_filter: Optional[Callable] = None,
-                             loop=None):
+                             loop=None,
+                             client_session: ClientSession=None):
     """
     Integrates asynchronous client for Azure Application Insights into an aiohttp application.
 
@@ -68,6 +69,7 @@ def use_application_insights(app: web.Application,
     :param is_success_request: optional method to determine whether a request was successful from server perspective
     :param requests_filter: optional method to filter requests from ai logging
     :param loop: optional asyncio loop, if not specified asyncio.get_event_loop is used
+    :param client_session: optionally, a client session to be used for web requests
     :return:
     """
     if loop is None:

@@ -2,7 +2,6 @@
 This module defines a more user-friendly json encoder, supporting time objects and UUID
 """
 import json
-from enum import Enum
 from datetime import time, date, datetime
 from uuid import UUID
 
@@ -22,13 +21,7 @@ class FriendlyEncoder(json.JSONEncoder):
             return obj.decode('utf8')
         if isinstance(obj, UUID):
             return str(obj)
-        #if isinstance(obj, Enum):
-        #    return int(obj)
-        # Let the base class default method raise the TypeError
         return json.JSONEncoder.default(self, obj)
-
-
-base_dumps = json.dumps
 
 
 def friendly_dumps(obj, skipkeys=False, ensure_ascii=False, check_circular=True,
@@ -36,7 +29,7 @@ def friendly_dumps(obj, skipkeys=False, ensure_ascii=False, check_circular=True,
         default=None, sort_keys=False, **kw):
     if cls is None:
         cls = FriendlyEncoder
-    return base_dumps(obj,
+    return json.dumps(obj,
                       skipkeys=skipkeys,
                       ensure_ascii=ensure_ascii,
                       check_circular=check_circular,

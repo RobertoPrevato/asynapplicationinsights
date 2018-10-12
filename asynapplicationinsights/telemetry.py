@@ -320,6 +320,8 @@ class AsyncTelemetryClient:
         await self.push(data)
 
     async def dispose(self):
-        await self._channel.flush()
-        await self._channel.dispose()
+        try:
+            await self._channel.flush()
+        finally:
+            await self._channel.dispose()
         return self
