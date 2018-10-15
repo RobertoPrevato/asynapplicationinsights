@@ -55,8 +55,8 @@ def use_application_insights(app: web.Application,
                              user_getter: Optional[Callable] = None,
                              is_success_request: Optional[Callable] = None,
                              requests_filter: Optional[Callable] = None,
-                             loop=None,
-                             client_session: ClientSession=None):
+                             client_session: ClientSession=None,
+                             loop=None):
     """
     Integrates asynchronous client for Azure Application Insights into an aiohttp application.
 
@@ -69,7 +69,7 @@ def use_application_insights(app: web.Application,
     :param is_success_request: optional method to determine whether a request was successful from server perspective
     :param requests_filter: optional method to filter requests from ai logging
     :param loop: optional asyncio loop, if not specified asyncio.get_event_loop is used
-    :param client_session: optionally, a client session to be used for web requests
+    :param client_session: optionally, an http client session for web requests
     :return:
     """
     if loop is None:
@@ -82,14 +82,13 @@ def use_application_insights(app: web.Application,
         is_success_request = default_is_success_request
 
     client = AsyncTelemetryClient(instrumentation_key,
-                                  AiohttpTelemetryChannel(loop),
+                                  AiohttpTelemetryChannel(loop, client_session),
                                   app_metadata,
                                   logging_device)
 
     # on clean up, dispose the client
-    async def on_clean_up_dispose_ai_client(app):
+    async def on_clean_up_dispose_ai_client(_):
         await client.track_event('Application_Stop')
-
         await client.dispose()
 
     app.on_cleanup.append(on_clean_up_dispose_ai_client)

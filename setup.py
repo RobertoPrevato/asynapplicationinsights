@@ -1,11 +1,13 @@
 from setuptools import setup
 
+
 def readme():
     with open('README.rst') as f:
         return f.read()
 
+
 setup(name='asynapplicationinsights',
-      version='0.0.1',
+      version='0.0.2',
       description='Azure Application Insights client using asyncio',
       long_description=readme(),
       classifiers=[

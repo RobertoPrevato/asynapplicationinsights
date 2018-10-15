@@ -204,7 +204,7 @@ class AsyncTelemetryClient:
     async def track_trace(self,
                           name,
                           properties=None,
-                          severity:int=1,
+                          severity: int=1,
                           *,
                           operation: Optional[Operation] = None,
                           session: Optional[Session] = None,

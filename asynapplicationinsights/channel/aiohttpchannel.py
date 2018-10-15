@@ -28,7 +28,7 @@ class AiohttpTelemetryChannel(TelemetryChannel):
         self._dispose_client = dispose_client
         self._http_client = client
         self._endpoint = endpoint
-        self._headers = {'Accept':'application/json', 'Content-Type': 'application/json; charset=utf-8'}
+        self._headers = {'Accept': 'application/json', 'Content-Type': 'application/json; charset=utf-8'}
 
     async def send(self, data: List):
         body = friendly_dumps(data)
