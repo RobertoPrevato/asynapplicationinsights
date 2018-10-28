@@ -54,6 +54,7 @@ def use_application_insights(app: web.Application,
                              time_getter: Optional[Callable] = None,
                              user_getter: Optional[Callable] = None,
                              is_success_request: Optional[Callable] = None,
+                             is_handled_exception: Optional[Callable] = None,
                              requests_filter: Optional[Callable] = None,
                              client_session: ClientSession=None,
                              loop=None):
@@ -67,6 +68,7 @@ def use_application_insights(app: web.Application,
     :param time_getter: optional method to return current time for request, if not specified datetime.utcnow is used
     :param user_getter: optional method to obtain user metadata information from request
     :param is_success_request: optional method to determine whether a request was successful from server perspective
+    :param is_handled_exception: optional method to determine whether an exception is handled and thrown intentionally
     :param requests_filter: optional method to filter requests from ai logging
     :param loop: optional asyncio loop, if not specified asyncio.get_event_loop is used
     :param client_session: optionally, an http client session for web requests
@@ -160,6 +162,22 @@ def use_application_insights(app: web.Application,
             if user_getter:
                 user_data = user_getter(request)
 
+            if is_handled_exception:
+                is_handled, status = is_handled_exception(exception)
+
+                if is_handled:
+                    success = is_success_request(status)
+                    await client.track_request(telemetry_id,
+                                               req_name,
+                                               req_url,
+                                               success,
+                                               start_datetime,
+                                               elapsed_ms,
+                                               status,
+                                               request.method,
+                                               user=user_data)
+                    raise
+
             status = 500
             success = False
             await client.track_request(telemetry_id,
@@ -172,7 +190,6 @@ def use_application_insights(app: web.Application,
                                        request.method,
                                        user=user_data)
 
-            # track exception
             await client.track_exception(exception.__class__,
                                          exception,
                                          exception.__traceback__,

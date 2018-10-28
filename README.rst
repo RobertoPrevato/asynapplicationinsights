@@ -6,7 +6,7 @@ Why
 ````````````````````````````````````````````````````````````````
 The official `Python SDK for Application Insights <https://github.com/Microsoft/ApplicationInsights-Python>`_ from Microsoft is designed to work with both 2.x and 3.x versions of Python language.
 
-This repository contains an unofficial Python SDK for Application Insights with support for ``asyncio`` and ``async/await`` syntax, targeting Python >=3.6 and also taking advantage of support for type hinting, available since recent versions of Python language.
+This repository contains an alternative Python SDK for Application Insights with support for ``asyncio`` and ``async/await`` syntax, targeting Python >=3.6 and also taking advantage of support for type hinting, available since recent versions of Python language.
 
 To install:
     >>> pip install asynapplicationinsights
