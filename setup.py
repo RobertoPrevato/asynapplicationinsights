@@ -7,7 +7,7 @@ def readme():
 
 
 setup(name='asynapplicationinsights',
-      version='0.0.3',
+      version='0.0.4',
       description='Azure Application Insights client using asyncio',
       long_description=readme(),
       classifiers=[

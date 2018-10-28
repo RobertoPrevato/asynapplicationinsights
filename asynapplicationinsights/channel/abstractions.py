@@ -33,7 +33,8 @@ class TelemetryChannel(ABC):
                 break
             data.append(item)
 
-        await self.send(data)
+        if data:
+            await self.send(data)
 
     @abstractmethod
     async def send(self, data: List):

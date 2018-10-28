@@ -1,7 +1,7 @@
 .PHONY: release test
 
 
-artifacts: test
+artifacts:
 	python setup.py sdist bdist_wheel
 
 
